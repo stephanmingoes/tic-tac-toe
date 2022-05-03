@@ -32,11 +32,20 @@ function handleCellClick(e) {
   const notCurrentClass = xTurn ? O_CLASS : X_CLASS;
 
   placeMark(cell, currentClass);
+
   if (checkWin(currentClass)) {
     document.querySelector(
       "[data-winning-message-text]"
     ).innerHTML = `${currentClass.toUpperCase()} WINS!`;
     document.querySelector(".winning-message").classList.add("show");
+
+    return;
+  } else if (checkDraw()) {
+    document.querySelector("[data-winning-message-text]").innerHTML =
+      "It's a draw!";
+    document.querySelector(".winning-message").classList.add("show");
+
+    return;
   } else {
     switcher(currentClass, notCurrentClass);
   }
@@ -58,6 +67,12 @@ function checkWin(currentClass) {
     return combination.every((index) => {
       return cellElements[index].classList.contains(currentClass);
     });
+  });
+}
+
+function checkDraw() {
+  return [...cellElements].every((cell) => {
+    return cell.classList.contains(X_CLASS) || cell.classList.contains(O_CLASS);
   });
 }
 

@@ -166,13 +166,12 @@ body {
 
 /* footer */
 .footer {
-    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 0.8rem;
     color: #fff;
-    bottom: 1rem;
+    margin-top: 5rem;
 }
 
 .footer a {
