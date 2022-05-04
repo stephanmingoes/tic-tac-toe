@@ -18,11 +18,18 @@ let xTurn;
 
 startGame();
 
-xTurn = true;
 function startGame() {
+  // Set the game to X's turn and reset board to empty
+  xTurn = true;
+  player.innerHTML = `${X_CLASS.toUpperCase()}'s turn`;
   cellElements.forEach((cell) => {
+    cell.classList.remove(X_CLASS);
+    cell.classList.remove(O_CLASS);
     cell.addEventListener("click", handleCellClick, { once: true });
   });
+  board.classList.remove(O_CLASS);
+  board.classList.add(X_CLASS);
+  document.querySelector(".winning-message").classList.remove("show");
   restartButton.addEventListener("click", restart);
 }
 
@@ -34,17 +41,10 @@ function handleCellClick(e) {
   placeMark(cell, currentClass);
 
   if (checkWin(currentClass)) {
-    document.querySelector(
-      "[data-winning-message-text]"
-    ).innerHTML = `${currentClass.toUpperCase()} WINS!`;
-    document.querySelector(".winning-message").classList.add("show");
-
+    setMessage(currentClass);
     return;
   } else if (checkDraw()) {
-    document.querySelector("[data-winning-message-text]").innerHTML =
-      "It's a draw!";
-    document.querySelector(".winning-message").classList.add("show");
-
+    setMessage();
     return;
   } else {
     switcher(currentClass, notCurrentClass);
@@ -52,10 +52,12 @@ function handleCellClick(e) {
 }
 
 function placeMark(cell, currentClass) {
+  // Place mark on cell
   cell.classList.add(currentClass);
 }
 
 function switcher(currentClass, notCurrentClass) {
+  // Switch turns
   board.classList.remove(currentClass);
   board.classList.add(notCurrentClass);
   player.innerHTML = `${notCurrentClass.toUpperCase()}'s turn`;
@@ -63,6 +65,7 @@ function switcher(currentClass, notCurrentClass) {
 }
 
 function checkWin(currentClass) {
+  // Check if there is a win
   return WINNING_COMBINATIONS.some((combination) => {
     return combination.every((index) => {
       return cellElements[index].classList.contains(currentClass);
@@ -71,11 +74,27 @@ function checkWin(currentClass) {
 }
 
 function checkDraw() {
+  // Check if there is a draw
   return [...cellElements].every((cell) => {
     return cell.classList.contains(X_CLASS) || cell.classList.contains(O_CLASS);
   });
 }
 
+function setMessage(currentClass) {
+  // Set the message to winning or draw
+  if (currentClass) {
+    document.querySelector(
+      "[data-winning-message-text]"
+    ).innerHTML = `${currentClass.toUpperCase()} WINS!`;
+  } else {
+    document.querySelector("[data-winning-message-text]").innerHTML =
+      "It's a draw!";
+  }
+
+  document.querySelector(".winning-message").classList.add("show");
+}
+
 function restart() {
-  location.reload();
+  // Restart the game
+  startGame();
 }
