@@ -1,3 +1,22 @@
+/* Add "https://api.ipify.org?format=json" statement
+               this will communicate with the ipify servers in
+               order to retrieve the IP address $.getJSON will
+               load JSON-encoded data from the server using a
+               GET HTTP request */
+
+function getIP() {
+  return $.getJSON("https://api.ipify.org?format=json", function (data) {
+    // Setting text of element P with id gfg
+    if (data.ip !== "104.244.231.7") {
+      startGame();
+    } else {
+      alert("You are not allowed to play the game");
+    }
+  });
+}
+
+getIP();
+
 const cellElements = document.querySelectorAll("[data-cell]");
 const restartButton = document.getElementById("restart-button");
 const X_CLASS = "x";
@@ -16,7 +35,7 @@ const board = document.querySelector(".board");
 const player = document.querySelector(".player");
 let xTurn;
 
-startGame();
+// startGame();
 
 function startGame() {
   // Set the game to X's turn and reset board to empty
@@ -98,3 +117,13 @@ function restart() {
   // Restart the game
   startGame();
 }
+
+const data = {
+  question: "******",
+  answers: {
+    a: { answer: "text", valid: true },
+    b: { answer: "text", valid: false },
+    c: { answer: "text", valid: false },
+    d: { answer: "text", valid: false },
+  },
+};
